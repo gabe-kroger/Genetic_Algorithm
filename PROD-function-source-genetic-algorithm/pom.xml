@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>cloudfunctions</groupId>
+  <artifactId>http-function</artifactId>
+  <version>1.0T</version>
+  <packaging>jar</packaging>
+
+  <name> Genetric Algorithn </name>
+
+  <properties>
+    <maven.compiler.target>11</maven.compiler.target>
+    <maven.compiler.source>11</maven.compiler.source>
+    <maven-compiler-plugin.source>8</maven-compiler-plugin.source>
+    <maven-compiler-plugin.target>8</maven-compiler-plugin.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <mongodb-driver-sync.version>4.2.3</mongodb-driver-sync.version>
+    <mongodb-crypt.version>1.2.0</mongodb-crypt.version>
+    <logback-classic.version>1.2.3</logback-classic.version>
+    <maven-compiler-plugin.version>3.8.1</maven-compiler-plugin.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.google.cloud.functions</groupId>
+      <artifactId>functions-framework-api</artifactId>
+      <version>1.0.1</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-driver-sync</artifactId>
+      <version>${mongodb-driver-sync.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongodb-crypt</artifactId>
+      <version>${mongodb-crypt.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>${logback-classic.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>3.8.1</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mongodb</groupId>
+      <artifactId>mongo-java-driver</artifactId>
+      <version>3.11.0</version>
+    </dependency>
+    <dependency>
+      <groupId>com.google.code.gson</groupId>
+      <artifactId>gson</artifactId>
+      <version>2.9.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.json</groupId>
+      <artifactId>json</artifactId>
+      <version>LATEST</version>
+    </dependency>
+  </dependencies>
+
+  <!-- Required for Java 11 functions in the inline editor -->
+  <build>
+    <finalName>genetic-algorithm</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-shade-plugin</artifactId>
+        <executions>
+          <execution>
+            <phase>package</phase>
+            <goals>
+              <goal>shade</goal>
+            </goals>
+            <configuration>
+              <outputFile>${project.build.directory}/deployment/${project.build.finalName}.jar</outputFile>
+              <transformers>
+                <!-- This may be needed if you need to shade a signed JAR -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.DontIncludeResourceTransformer">
+                  <resource>.SF</resource>
+                  <resource>.DSA</resource>
+                  <resource>.RSA</resource>
+                </transformer>
+                <!-- This is needed if you have dependencies that use Service Loader. Most Google Cloud client libraries does. -->
+                <transformer implementation="org.apache.maven.plugins.shade.resource.ServicesResourceTransformer" />
+              </transformers>
+            </configuration>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
