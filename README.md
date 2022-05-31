@@ -1,0 +1,1 @@
+Genetic Algorithm written in Java. This algorthm was used in collaboration with Capstone_Project repo in order to solve the issue of automatically generating a schedule of courses with assigned instructures.
